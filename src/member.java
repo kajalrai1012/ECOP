@@ -18,8 +18,9 @@ public class member extends javax.swing.JInternalFrame {
     public member() {
         initComponents();
          db =new  DBConnection();
-         stmt=db.stmt;
+          stmt=db.stmt;
          loadstaffid();
+       
     }
 
     
@@ -159,7 +160,7 @@ public class member extends javax.swing.JInternalFrame {
         jRadioButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jRadioButton2.setText("Female");
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd-MM-yyyy"))));
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd-MMM-yyyy"))));
         jFormattedTextField1.setToolTipText("1-jan-2024");
         jFormattedTextField1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -294,15 +295,16 @@ public class member extends javax.swing.JInternalFrame {
         { jOptionPane1.showMessageDialog(this," Please select gender","error",0);
         return;
         }
-     int contact=Integer.parseInt(jTextField2.getText());
+     String contact=jTextField2.getText().trim();
      
       String doj=jFormattedTextField1.getText().trim();
+      System.out.println("date entered"+doj);
       if(doj.isEmpty())
       {jOptionPane1.showMessageDialog(this,"please enter date","",0);
       return;
       }
        
-      String sql="insert into staff_master values('"+staff+"','"+name+"','"+desig+"','"+contact+"',TO_DATE('"+doj+"','DD-MM-YYYY'),'"+gender+"')";
+      String sql="insert into staff_master values('"+staff+"','"+name+"','"+desig+"',TO_DATE('"+doj+"','DD-MM-YYYY'),'"+gender+"','"+contact+"')";
       System.out.println(sql);
       stmt.executeUpdate(sql);
        

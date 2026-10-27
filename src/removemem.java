@@ -20,24 +20,14 @@ public class removemem extends javax.swing.JInternalFrame {
      */Statement stmt;
      ResultSet rs;
      String id;
+     DBConnection db;
     public removemem() {
         initComponents();
-        try{
-            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-            Connection mycon =DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE ","system","kukku");
-            stmt=mycon.createStatement();
-          
-          
+        
+             db =new  DBConnection();
+             stmt=db.stmt;
            getmem();
-  
-           
-            
-           
-        }
-        catch(SQLException e)
-        {
-         jOptionPane2.showMessageDialog(this,"Error"+e,"Error",0);
-        }
+    
        
     }
     String name,desig,contact,doj,gender;
@@ -48,18 +38,19 @@ public class removemem extends javax.swing.JInternalFrame {
 
             
            
-            String sql="select * from staff_members where staff_id="+id;
+            String sql="select * from staff_master where sid="+id;
             rs= stmt.executeQuery(sql);
            while(rs.next())
            { 
            
-           id=String.valueOf(rs.getInt("staff_id"));
+            id=String.valueOf(rs.getInt("sid"));
          
-           name=String.valueOf(rs.getString("name"));
-           desig=String.valueOf(rs.getString("designation"));
-            contact=String.valueOf(rs.getString("contact_no"));
+            name=String.valueOf(rs.getString("name"));
+             desig=String.valueOf(rs.getString("designation"));
+           
              doj=String.valueOf(rs.getDate("doj"));
-           gender=String.valueOf(rs.getString("gender"));
+             gender=String.valueOf(rs.getString("gender"));
+             contact=String.valueOf(rs.getString("contact_no"));
            }
 
             jLabel8.setText(name); 
@@ -84,18 +75,18 @@ public class removemem extends javax.swing.JInternalFrame {
  jLabel10.setText(null);
  jLabel11.setText(null);
  jLabel12.setText(null);
-
+ jComboBox1.setSelectedIndex(-1);
  
  }
  int i=0;
  void getmem()
  {  try{
-           String sql="select * from staff_members ";
+           String sql="select * from staff_master ";
            rs= stmt.executeQuery(sql);
            while(rs.next())
            { 
            
-           id=String.valueOf(rs.getInt("staff_id"));
+           id=String.valueOf(rs.getInt("sid"));
           jComboBox1.insertItemAt(id, i++);
     
        }}
@@ -279,10 +270,11 @@ public class removemem extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      try{ String sql="delete from staff_members where staff_id ="+id;
+      try{ String sql="delete from staff_master where sid ="+id;
              stmt.executeUpdate(sql);
              
             jOptionPane2.showMessageDialog(this,"deleted","delete",1);
+            clear();
       }
       catch(SQLException e)
         {
