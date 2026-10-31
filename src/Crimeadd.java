@@ -14,18 +14,12 @@ public class Crimeadd extends javax.swing.JInternalFrame {
      * Creates new form Crimeadd
      */
    Statement stmt;
+                   DBConnection db;
+
     public Crimeadd() {
         initComponents();
-          try{
-            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-            Connection mycon =DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE ","system","kukku");
-            stmt=mycon.createStatement();
-            loadcrimeid();
-        }
-        catch(SQLException e)
-        {
-         jOptionPane1.showMessageDialog(this,"Error"+e,"Error",0);
-        }
+        db =new  DBConnection();
+          stmt=db.stmt;
     }
 
     /**
