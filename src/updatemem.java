@@ -1,8 +1,8 @@
 
 import java.sql.*;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
+/*import java.sql.DriverManager;
+import java.sql.SQLException;*/
+import java.text.SimpleDateFormat;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
@@ -16,82 +16,90 @@ public class updatemem extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form updatemem
-     */Statement stmt;
-     ResultSet rs;
-     String id;
+     */Statement stmt; 
+      String id;
+      DBConnection db;
     public updatemem() {
         initComponents();
-        try{
-            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-            Connection mycon =DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE ","system","kukku");
-            stmt=mycon.createStatement();
-             getinfo();
-        }
-        catch(SQLException e)
-        {
-         jOptionPane1.showMessageDialog(this,"Error"+e,"Error",0);
-        }
+          db =new  DBConnection();
+          stmt=db.stmt;
+          getup();
     }
     int i=0;
-    void getinfo()
+    String name,desig,contact,doj,gender;
+    void getup()
     {    
-        try{
-           String sql="select * from staff_members ";
-           rs= stmt.executeQuery(sql);
+         try{
+           String sql="select * from staff_master ";
+           ResultSet rs= stmt.executeQuery(sql);
            while(rs.next())
            { 
            
-           id=String.valueOf(rs.getInt("staff_id"));
-          jComboBox2.insertItemAt(id, i++);
-    
-       }}
+           id=String.valueOf(rs.getInt("sid"));
+           jComboBox2.insertItemAt(id, i++);
+           }
+       }
       catch(SQLException e)
         {
          jOptionPane1.showMessageDialog(this,"Error"+e,"Error",0);
         }
- 
-        }
-    
-     void reset()
+  
+   
+    }
+     void clear()
     {
-        jTextField1.setText(null);
-        jTextField2.setText(null);
-      
+       jTextField1.setText(null);
+       jTextField2.setText(null);
+       jComboBox2.setSelectedIndex(-1);
        jTextField3.setText(null);
-      
        jTextField4.setText(null);
        
     
     
     }
+     
+     
     
     
-void getup()
-        { try
+void getinfo()
+       
       {     
-            sid= jComboBox2.getSelectedItem().toString();
-
-            
+            try
+        
+      { if(jComboBox2.getSelectedItem()==null)
+         {   
+             clear();
+             return;
+         }
+            id= jComboBox2.getSelectedItem().toString();  
+            String sql="select * from staff_master where sid="+id;
+            ResultSet rs= stmt.executeQuery(sql);
+           if(rs.next())
+            { 
            
-            String sql="select * from staff_members where staff_id="+sid;
-            rs= stmt.executeQuery(sql);
-             rs.next();
-            name=String.valueOf(rs.getString("name"));
-            desig=String.valueOf(rs.getString("designation"));
-            contact=String.valueOf(rs.getString("contact_no"));
-            gender=String.valueOf(rs.getString("gender"));
-            doj=String.valueOf(rs.getDate("doj"));
-
-             jTextField1.setText(name); 
-             jTextField4.setText(desig);
-             jTextField2.setText(contact);
-             jTextField3.setText(gender);
-             jFormattedTextField1.setText(doj);
+             //id=String.valueOf(rs.getInt("sid"));
+             name=String.valueOf(rs.getString("name"));
+             desig=String.valueOf(rs.getString("designation"));
+             //doj=String.valueOf(rs.getDate("doj"));
+             java.sql.Date date=rs.getDate("doj");
+             SimpleDateFormat sdf= new  SimpleDateFormat("dd-MM-yyyy");
+             doj=sdf.format(date);
+             gender=String.valueOf(rs.getString("gender"));
+             contact=String.valueOf(rs.getString("contact_no"));
+             System.out.println( rs.getDate("doj"));
            }
-         catch(SQLException e)
+               
+                jTextField1.setText(name); 
+                jTextField4.setText(desig);
+                jTextField2.setText(contact);
+                jFormattedTextField1.setText(doj);
+                jTextField3.setText(gender);
+           }
+      
+          catch(SQLException e)
         {
          jOptionPane1.showMessageDialog(this,"Error"+e,"Error",0);
-        }  }      
+        } }      
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -159,6 +167,11 @@ void getup()
         });
 
         jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setText("Update");
@@ -199,8 +212,9 @@ void getup()
             }
         });
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd-MMM-yyyy"))));
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText(" Date of Joining");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -208,33 +222,36 @@ void getup()
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jButton2)
-                    .addComponent(jLabel5)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel6)
-                        .addComponent(jLabel4)))
+                .addGap(61, 61, 61)
+                .addComponent(jButton2)
+                .addGap(74, 74, 74)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(123, 123, 123)
-                        .addComponent(jButton3))
+                        .addGap(80, 80, 80)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel4))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(174, 174, 174)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jFormattedTextField1)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jComboBox2, 0, 215, Short.MAX_VALUE)
-                            .addComponent(jTextField4))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(61, Short.MAX_VALUE))
+                        .addGap(74, 74, 74)
+                        .addComponent(jLabel5)))
+                .addGap(145, 145, 145)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboBox2, 0, 243, Short.MAX_VALUE)
+                    .addComponent(jTextField1)
+                    .addComponent(jTextField4)
+                    .addComponent(jTextField3)
+                    .addComponent(jTextField2)
+                    .addComponent(jFormattedTextField1))
+                .addContainerGap(218, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,28 +264,34 @@ void getup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jLabel3))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton1)
                     .addComponent(jButton3))
-                .addGap(32, 32, 32))
+                .addGap(53, 53, 53))
         );
 
         pack();
@@ -277,7 +300,7 @@ void getup()
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
-   String  sid,name,desig,contact,doj,gender;
+  // String  sid,name,desig,contact,doj,gender;
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
@@ -301,26 +324,32 @@ void getup()
         return;
        }
        else
-       {name=name.trim();
-        jTextField1.setText(name);
+       {
+           name=name.trim();
+          jTextField1.setText(name);
        
        }}
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{ String newname=jTextField1.getText();
              String newdesig=jTextField4.getText();
              String newgen=jTextField3.getText();
-             String newdoj=jFormattedTextField1.getText();
+             //String newdoj=jFormattedTextField1.getText();
       
              String newco=jTextField2.getText();
-     
-            
-             String sql="update staff_members set name='"+newname+"',designation='"+newdesig+"',contact_no='"+newco+"',doj='"+newdoj+"',gender='"+newgen+"' where staff_id="+sid+"";
+             String newdoj=jFormattedTextField1.getText().trim();
+             System.out.println("date entered"+doj);
+            if(doj.isEmpty())
+            {jOptionPane1.showMessageDialog(this,"please enter date","",0);
+              return;
+                 }
+             
+             String sql="update staff_master set name='"+newname+"',designation='"+newdesig+"',doj= TO_DATE('"+newdoj+"','DD-MM-YYYY'),gender='"+newgen+"',contact_no='"+newco+"' where sid="+id+"";
              System.out.println(sql);
              stmt.executeUpdate(sql);
             
    
       jOptionPane1.showMessageDialog(this,"Entry successsfully Updated","UPDATE",1);
-      reset();
+      clear();
       
      }
       catch(SQLException e)
@@ -330,7 +359,7 @@ void getup()
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
-         getup();
+         getinfo();
          jTextField1.requestFocus();
     }//GEN-LAST:event_jComboBox2ItemStateChanged
 
@@ -339,12 +368,16 @@ void getup()
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       reset();
+       clear();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
      
     }//GEN-LAST:event_jTextField1FocusLost
+
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

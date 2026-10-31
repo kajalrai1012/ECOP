@@ -26,7 +26,7 @@ public class removemem extends javax.swing.JInternalFrame {
         
              db =new  DBConnection();
              stmt=db.stmt;
-           getmem();
+             getmem();
     
        
     }
@@ -34,49 +34,50 @@ public class removemem extends javax.swing.JInternalFrame {
  void getinfo()
 {   
     try
-      {     id= jComboBox1.getSelectedItem().toString();  
-
-            
-           
+        
+      { if(jComboBox1.getSelectedItem()==null)
+         {   
+             clear();
+             return;
+         }
+            id= jComboBox1.getSelectedItem().toString();  
             String sql="select * from staff_master where sid="+id;
             rs= stmt.executeQuery(sql);
-           while(rs.next())
-           { 
+           if(rs.next())
+            { 
            
-            id=String.valueOf(rs.getInt("sid"));
-         
-            name=String.valueOf(rs.getString("name"));
+             //id=String.valueOf(rs.getInt("sid"));
+             name=String.valueOf(rs.getString("name"));
              desig=String.valueOf(rs.getString("designation"));
-           
              doj=String.valueOf(rs.getDate("doj"));
              gender=String.valueOf(rs.getString("gender"));
              contact=String.valueOf(rs.getString("contact_no"));
            }
 
-            jLabel8.setText(name); 
-            jLabel9.setText(desig);
-            jLabel10.setText(contact);
-            jLabel11.setText(doj);
-            jLabel12.setText(gender);
+                jLabel8.setText(name); 
+                jLabel9.setText(desig);
+                jLabel10.setText(contact);
+                jLabel11.setText(doj);
+                jLabel12.setText(gender);
            }
-           
+      
           catch(SQLException e)
         {
          jOptionPane2.showMessageDialog(this,"Error"+e,"Error",0);
         }
-           
-      }
+}
+      
  
  
  void clear()
  {
- jLabel8.setText(null);
- jLabel9.setText(null);
- jLabel10.setText(null);
- jLabel11.setText(null);
- jLabel12.setText(null);
- jComboBox1.setSelectedIndex(-1);
- 
+    jLabel8.setText(null);
+    jLabel9.setText(null);
+    jLabel10.setText(null);
+    jLabel11.setText(null);
+    jLabel12.setText(null);
+    jComboBox1.setSelectedIndex(-1);
+
  }
  int i=0;
  void getmem()
@@ -87,9 +88,9 @@ public class removemem extends javax.swing.JInternalFrame {
            { 
            
            id=String.valueOf(rs.getInt("sid"));
-          jComboBox1.insertItemAt(id, i++);
-    
-       }}
+           jComboBox1.insertItemAt(id, i++);
+           }
+       }
       catch(SQLException e)
         {
          jOptionPane2.showMessageDialog(this,"Error"+e,"Error",0);
@@ -270,11 +271,17 @@ public class removemem extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      try{ String sql="delete from staff_master where sid ="+id;
-             stmt.executeUpdate(sql);
-             
-            jOptionPane2.showMessageDialog(this,"deleted","delete",1);
-            clear();
+      try{ 
+           if(id==null)
+            {
+                return;
+            }
+           else{
+                String sql="delete from staff_master where sid ="+id;
+                 stmt.executeUpdate(sql);
+
+                jOptionPane2.showMessageDialog(this,"deleted","delete",1);
+            clear();}
       }
       catch(SQLException e)
         {
@@ -288,7 +295,11 @@ public class removemem extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-      getinfo();
+      if(evt.getStateChange()==java.awt.event.ItemEvent.SELECTED)
+      {
+          getinfo();
+      }
+       // getinfo();
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

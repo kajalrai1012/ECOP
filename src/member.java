@@ -51,7 +51,7 @@ public class member extends javax.swing.JInternalFrame {
     {
         jTextField1.setText(null);
        jTextField2.setText(null);
-       jComboBox1.setSelectedIndex(0);
+       jComboBox1.setSelectedIndex(-1);
        jFormattedTextField1.setText(null);
        jTextField1.requestFocus();
        buttonGroup1.clearSelection();
@@ -310,7 +310,7 @@ public class member extends javax.swing.JInternalFrame {
        
       jOptionPane1.showMessageDialog(this,"Entry successsfully saved","save",1);
     
-    
+      reset();
       loadstaffid();
      }
       catch(SQLException e)
