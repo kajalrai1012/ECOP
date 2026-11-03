@@ -20,6 +20,7 @@ public class javaproject extends javax.swing.JFrame {
     public javaproject() {
         initComponents();
          db =new  DBConnection();
+        System.out.println( getClass().getResource("/657787511556281664-24.png"));
         
         
     }

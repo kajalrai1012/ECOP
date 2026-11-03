@@ -18,24 +18,18 @@ public class addweapon extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form addweapon
-     */Statement stmt;
-     Connection  mycon;
-    
+     */Statement stmt; 
+       Connection con;
+      DBConnection db;
      ResultSet rs;
     
      String fileName;
     public addweapon() {
         initComponents();
-          try{
-            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-            mycon =DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE ","system","kukku");
-            stmt=mycon.createStatement();
-            weaponid();
-        }
-        catch(SQLException e)
-        {
-         jOptionPane1.showMessageDialog(this,"Error"+e,"Error",0);
-        }
+          db =new  DBConnection();
+          stmt=db.stmt;
+          con=db.con;
+          weaponid();
     }
 
     
@@ -46,13 +40,12 @@ public class addweapon extends javax.swing.JInternalFrame {
     {
         try
         {   jTextField1.requestFocus();
-            ResultSet rs=stmt.executeQuery("select max(weapon_id) from weapons");
-            rs.next();
-            if (rs==null)
-                weaponid=1;
-            else
-                weaponid=rs.getInt(1)+1;
-            jLabel7.setText(weaponid+"");
+            ResultSet rs=stmt.executeQuery("select max(wid)+1 from weapons_master");
+            if(rs.next())
+           {
+           weaponid=rs.getInt(1);
+           jLabel7.setText(weaponid+"");}
+           rs.close();
                     
         }
         catch(SQLException e)
@@ -272,14 +265,14 @@ public class addweapon extends javax.swing.JInternalFrame {
           String size=jTextField2.getText();
           String trait=jTextField3.getText();
           vallidate();
-          PreparedStatement ps=mycon.prepareStatement("insert into weapons values(?,?,?,?,?,?)");  
+          PreparedStatement ps=con.prepareStatement("insert into weapons_master values(?,?,?,?,?,?)");  
           ps.setInt(1,weaponid);
           ps.setString(2,name);  
           ps.setString(3,type);
           ps.setString(4,size);
-          ps.setString(5,trait); 
+          ps.setString(6,trait); 
           FileInputStream fin=new FileInputStream(fileName);  
-          ps.setBinaryStream(6,fin,fin.available());  
+          ps.setBinaryStream(5,fin,fin.available());  
           int i=ps.executeUpdate();  
           jOptionPane1.showMessageDialog(this,"New Weapon Added");
           clear();
@@ -334,8 +327,8 @@ public class addweapon extends javax.swing.JInternalFrame {
     }                                     
 
     private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {                                      
-       int size=Integer.parseInt(jTextField2.getText());
-       if(size<0 || size>1000)
+     String size=jTextField2.getText();
+       if(size=="0" )
        {
         jOptionPane1.showMessageDialog(this,"Please Enter Valid size","Error",0);
         jTextField2.requestFocus();

@@ -18,7 +18,7 @@ public class DBConnection {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             DriverManager.registerDriver((new oracle.jdbc.OracleDriver()));
             con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","c##ecop","ecop123");
-            stmt=con.createStatement();
+            stmt=con.createStatement();//
 //            con = DriverManager.getConnection(
 //                    "jdbc:oracle:thin:@localhost:1521:XE [c##ecop on Default schema]",
 //                    "c##ecop",
