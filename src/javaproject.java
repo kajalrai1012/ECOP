@@ -43,8 +43,6 @@ public class javaproject extends javax.swing.JFrame {
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem11 = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -90,13 +88,11 @@ public class javaproject extends javax.swing.JFrame {
             .addGap(0, 443, Short.MAX_VALUE)
         );
 
-        fileMenu.setMnemonic('f');
         fileMenu.setText(" Staff Member");
         fileMenu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
         openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         openMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/657787511556281664-24.png"))); // NOI18N
-        openMenuItem.setMnemonic('o');
         openMenuItem.setText("Add");
         openMenuItem.setToolTipText("ctrl+A");
         openMenuItem.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/657787511556281664-24.png"))); // NOI18N
@@ -109,7 +105,6 @@ public class javaproject extends javax.swing.JFrame {
 
         saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         saveMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/19187836491541068764-20.png"))); // NOI18N
-        saveMenuItem.setMnemonic('s');
         saveMenuItem.setText("Remove");
         saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,7 +115,6 @@ public class javaproject extends javax.swing.JFrame {
 
         saveAsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         saveAsMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/14787197661582004498-24.png"))); // NOI18N
-        saveAsMenuItem.setMnemonic('a');
         saveAsMenuItem.setText("Update");
         saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -129,16 +123,8 @@ public class javaproject extends javax.swing.JFrame {
         });
         fileMenu.add(saveAsMenuItem);
 
-        jMenu5.setText("jMenu5");
-
-        jMenuItem11.setText("jMenuItem11");
-        jMenu5.add(jMenuItem11);
-
-        fileMenu.add(jMenu5);
-
         menuBar.add(fileMenu);
 
-        editMenu.setMnemonic('e');
         editMenu.setText("Crime");
         editMenu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
@@ -202,11 +188,9 @@ public class javaproject extends javax.swing.JFrame {
 
         menuBar.add(editMenu);
 
-        helpMenu.setMnemonic('h');
         helpMenu.setText("Search");
         helpMenu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
-        contentMenuItem.setMnemonic('c');
         contentMenuItem.setText("Staff member");
         contentMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,7 +199,6 @@ public class javaproject extends javax.swing.JFrame {
         });
         helpMenu.add(contentMenuItem);
 
-        aboutMenuItem.setMnemonic('a');
         aboutMenuItem.setText("Criminal");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -415,10 +398,8 @@ public class javaproject extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
